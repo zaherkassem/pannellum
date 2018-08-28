@@ -70,6 +70,7 @@ var config,
     hotspotsCreated = false;
 
 var defaultConfig = {
+	fullscreenActive:false,	
     hfov: 100,
     minHfov: 50,
     multiResMinHfov: false,
@@ -152,12 +153,13 @@ dragFix.className = 'pnlm-dragfix';
 uiContainer.appendChild(dragFix);
 
 // Display about information on right click
-var aboutMsg = document.createElement('span');
+// remove by Zaher Kassem at 26/08/2018
+/*var aboutMsg = document.createElement('span');
 aboutMsg.className = 'pnlm-about-msg';
 aboutMsg.innerHTML = '<a href="https://pannellum.org/" target="_blank">Pannellum</a>';
 uiContainer.appendChild(aboutMsg);
 dragFix.addEventListener('contextmenu', aboutMessage);
-
+*/
 // Create info display
 var infoDisplay = {};
 
@@ -2106,12 +2108,33 @@ function onFullScreenChange() {
     } else {
         controls.fullscreen.classList.remove('pnlm-fullscreen-toggle-button-active');
         fullscreenActive = false;
+        
     }
-
+    setFullscreenActive(fullscreenActive);
     // Resize renderer (deal with browser quirks and fixes #155)
     renderer.resize();
     setHfov(config.hfov);
     animateInit();
+}
+
+/**
+ * Sets viewer's fullscreenActive field.
+ * @private
+ * @param {number} flag - true.
+ */
+
+function setFullscreenActive(flag) {
+    config.fullscreenActive = flag;
+}
+
+/**
+ * Gets viewer's fullscreenActive field.
+ * @private
+ * @param {boolean} flag - true/false.
+ */
+
+function getFullscreenActive() {
+    return config.fullscreenActive;
 }
 
 /**
@@ -2301,6 +2324,10 @@ function startOrientation() {
     orientation = 1;
     window.addEventListener('deviceorientation', orientationListener);
     controls.orientation.classList.add('pnlm-orientation-button-active');
+}
+
+function toggleOrientation(){
+	(orientation) ? stopOrientation() : startOrientation();
 }
 
 /**
@@ -2778,6 +2805,17 @@ this.toggleFullscreen = function() {
 }
 
 /**
+ * Toggle orientation.
+ * @memberof Viewer
+ * @instance
+ * @returns {Viewer} `this`
+ */
+this.toggleOrientation = function(){
+	toggleOrientation();
+	return this;
+}
+
+/**
  * Get configuration of current scene.
  * @memberof Viewer
  * @instance
@@ -3027,10 +3065,15 @@ this.destroy = function() {
         dragFix.removeEventListener('pointerup', onDocumentPointerUp, false);
         dragFix.removeEventListener('pointerleave', onDocumentPointerUp, false);
     }
-    container.innerHTML = '';
-    container.classList.remove('pnlm-container');
-    uiContainer.classList.remove('pnlm-grab');
-    uiContainer.classList.remove('pnlm-grabbing');
+    
+    if(initialConfig.customControls){
+    	$(container).children(":not("+initialConfig.customControls+")").remove();	
+    }else{
+	    container.innerHTML = '';
+	    container.classList.remove('pnlm-container');
+	    uiContainer.classList.remove('pnlm-grab');
+	    uiContainer.classList.remove('pnlm-grabbing');
+    }
 }
 
 }
