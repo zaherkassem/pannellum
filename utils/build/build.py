@@ -146,7 +146,7 @@ def main():
     if (len(sys.argv) > 1 and sys.argv[1] == 'release'):
         build(JS, CSS, HTML, 'pannellum', True)
     else:
-        build(JS, CSS, HTML, 'pannellum')
+        build(JS, CSS, HTML, 'pannellum',True)
 
 if __name__ == "__main__":
     main()

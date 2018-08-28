@@ -70,7 +70,7 @@ var config,
     hotspotsCreated = false;
 
 var defaultConfig = {
-	fullscreenActive:false,	
+	fullscreenActive:false,	// added by Zaher Kassem at 28/08/2018
     hfov: 100,
     minHfov: 50,
     multiResMinHfov: false,
@@ -132,7 +132,7 @@ defaultConfig.strings = {
                 '%spx wide. Try another device.' +
                 ' (If you\'re the author, try scaling down the image.)',    // Two substitutions: image width, max image width
     unknownError: 'Unknown error. Check developer console.',
-}
+};
 
 // Initialize container
 container = typeof container === 'string' ? document.getElementById(container) : container;
@@ -695,7 +695,7 @@ function onDocumentMouseDown(event) {
     // Turn off auto-rotation if enabled
     stopAnimation();
 
-    stopOrientation();
+    //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
     config.roll = 0;
 
     speed.hfov = 0;
@@ -818,7 +818,7 @@ function onDocumentTouchStart(event) {
     // Turn off auto-rotation if enabled
     stopAnimation();
 
-    stopOrientation();
+    //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
     config.roll = 0;
 
     speed.hfov = 0;
@@ -1016,7 +1016,7 @@ function onDocumentKeyPress(event) {
     stopAnimation();
     latestInteraction = Date.now();
 
-    stopOrientation();
+    //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
     config.roll = 0;
 
     // Record key pressed
@@ -1215,7 +1215,7 @@ function keyRepeat() {
         // Pan
         if (newTime - prevTime > 0.001) {
             var timeDiff = (newTime - prevTime) / 1000;
-            var yawDiff = (speed.yaw / timeDiff * diff - config.autoRotate * 0.2) * timeDiff
+            var yawDiff = (speed.yaw / timeDiff * diff - config.autoRotate * 0.2) * timeDiff;
             yawDiff = (-config.autoRotate > 0 ? 1 : -1) * Math.min(Math.abs(config.autoRotate * timeDiff), Math.abs(yawDiff));
             config.yaw += yawDiff;
         }
@@ -1504,7 +1504,7 @@ Quaternion.prototype.multiply = function(q) {
                           this.x*q.w + this.w*q.x + this.y*q.z - this.z*q.y,
                           this.y*q.w + this.w*q.y + this.z*q.x - this.x*q.z,
                           this.z*q.w + this.w*q.z + this.x*q.y - this.y*q.x);
-}
+};
 
 /**
  * Converts quaternion to Euler angles.
@@ -1518,7 +1518,7 @@ Quaternion.prototype.toEulerAngles = function() {
         psi = Math.atan2(2 * (this.w * this.z + this.x * this.y),
                          1 - 2 * (this.y * this.y + this.z * this.z));
     return [phi, theta, psi];
-}
+};
 
 /**
  * Converts device orientation API Tait-Bryan angles to a quaternion.
@@ -1671,7 +1671,7 @@ function createHotSpot(hs) {
     hs.yaw = Number(hs.yaw) || 0;
 
     var div = document.createElement('div');
-    div.className = 'pnlm-hotspot-base'
+    div.className = 'pnlm-hotspot-base';
     if (hs.cssClass)
         div.className += ' ' + hs.cssClass;
     else
@@ -1979,7 +1979,7 @@ function processOptions(isPreview) {
                 link.target = '_blank';
                 link.textContent = 'Click here to view this panorama in an alternative viewer.';
                 var message = document.createElement('p');
-                message.textContent = 'Your browser does not support WebGL.'
+                message.textContent = 'Your browser does not support WebGL.';
                 message.appendChild(document.createElement('br'));
                 message.appendChild(link);
                 infoDisplay.errorMsg.innerHTML = ''; // Removes all children nodes
@@ -2110,7 +2110,7 @@ function onFullScreenChange() {
         fullscreenActive = false;
         
     }
-    setFullscreenActive(fullscreenActive);
+    setFullscreenActive(fullscreenActive); // added by Zaher Kassem at 28/08/2018
     // Resize renderer (deal with browser quirks and fixes #155)
     renderer.resize();
     setHfov(config.hfov);
@@ -2121,6 +2121,7 @@ function onFullScreenChange() {
  * Sets viewer's fullscreenActive field.
  * @private
  * @param {number} flag - true.
+ * added by Zaher Kassem at 28/08/2018
  */
 
 function setFullscreenActive(flag) {
@@ -2131,6 +2132,7 @@ function setFullscreenActive(flag) {
  * Gets viewer's fullscreenActive field.
  * @private
  * @param {boolean} flag - true/false.
+ * added by Zaher Kassem at 28/08/2018
  */
 
 function getFullscreenActive() {
@@ -2173,7 +2175,7 @@ function constrainHfov(hfov) {
     }
     if (minHfov > config.maxHfov) {
         // Don't change view if bounds don't make sense
-        console.log('HFOV bounds do not make sense (minHfov > maxHfov).')
+        console.log('HFOV bounds do not make sense (minHfov > maxHfov).');
         return config.hfov;
     }
     var newHfov = config.hfov;
@@ -2326,6 +2328,11 @@ function startOrientation() {
     controls.orientation.classList.add('pnlm-orientation-button-active');
 }
 
+/**
+ * toggle orientation
+ * @private
+ * added by Zaher Kassem at 28/08/2018
+ */
 function toggleOrientation(){
 	(orientation) ? stopOrientation() : startOrientation();
 }
@@ -2416,7 +2423,7 @@ this.setPitch = function(pitch, animated, callback, callbackArgs) {
             'duration': animated,
             'callback': callback,
             'callbackArgs': callbackArgs
-        }
+        };
     } else {
         config.pitch = pitch;
     }
@@ -2469,13 +2476,13 @@ this.getYaw = function() {
  */
 this.setYaw = function(yaw, animated, callback, callbackArgs) {
     animated = animated == undefined ? 1000: Number(animated);
-    yaw = ((yaw + 180) % 360) - 180 // Keep in bounds
+    yaw = ((yaw + 180) % 360) - 180; // Keep in bounds
     if (animated) {
         // Animate in shortest direction
         if (config.yaw - yaw > 180)
-            yaw += 360
+            yaw += 360;
         else if (yaw - config.yaw > 180)
-            yaw -= 360
+            yaw -= 360;
 
         animatedMove.yaw = {
             'startTime': Date.now(),
@@ -2484,7 +2491,7 @@ this.setYaw = function(yaw, animated, callback, callbackArgs) {
             'duration': animated,
             'callback': callback,
             'callbackArgs': callbackArgs
-        }
+        };
     } else {
         config.yaw = yaw;
     }
@@ -2545,7 +2552,7 @@ this.setHfov = function(hfov, animated, callback, callbackArgs) {
             'duration': animated,
             'callback': callback,
             'callbackArgs': callbackArgs
-        }
+        };
     } else {
         setHfov(hfov);
     }
@@ -2602,7 +2609,7 @@ this.lookAt = function(pitch, yaw, hfov, animated, callback, callbackArgs) {
     if (hfov !== undefined)
         this.setHfov(hfov, animated, callback, callbackArgs);
     return this;
-}
+};
 
 /**
  * Returns the panorama's north offset.
@@ -2727,7 +2734,7 @@ this.setUpdate = function(bool) {
     else
         animateInit();
     return this;
-}
+};
 
 /**
  * Calculate panorama pitch and yaw from location of mouse event.
@@ -2738,7 +2745,7 @@ this.setUpdate = function(bool) {
  */
 this.mouseEventToCoords = function(event) {
     return mouseEventToCoords(event);
-}
+};
 
 /**
  * Change scene being viewed.
@@ -2754,7 +2761,7 @@ this.loadScene = function(sceneId, pitch, yaw, hfov) {
     if (loaded !== false)
         loadScene(sceneId, pitch, yaw, hfov);
     return this;
-}
+};
 
 /**
  * Get ID of current scene.
@@ -2764,7 +2771,7 @@ this.loadScene = function(sceneId, pitch, yaw, hfov) {
  */
 this.getScene = function() {
     return config.scene;
-}
+};
 
 /**
  * Add a new scene.
@@ -2802,18 +2809,19 @@ this.removeScene = function(sceneId) {
 this.toggleFullscreen = function() {
     toggleFullscreen();
     return this;
-}
+};
 
 /**
  * Toggle orientation.
  * @memberof Viewer
  * @instance
  * @returns {Viewer} `this`
+ * added by Zaher Kassem at 28/08/2018
  */
 this.toggleOrientation = function(){
 	toggleOrientation();
 	return this;
-}
+};
 
 /**
  * Get configuration of current scene.
@@ -2823,7 +2831,7 @@ this.toggleOrientation = function(){
  */
 this.getConfig = function() {
     return config;
-}
+};
 
 /**
  * Get viewer's container element.
@@ -2833,7 +2841,7 @@ this.getConfig = function() {
  */
 this.getContainer = function() {
     return container;
-}
+};
 
 /**
  * Add a new hot spot.
@@ -2859,7 +2867,7 @@ this.addHotSpot = function(hs, sceneId) {
             }
             initialConfig.scenes[id].hotSpots.push(hs); // Add hot spot to config
         } else {
-            throw 'Invalid scene ID!'
+            throw 'Invalid scene ID!';
         }
     }
     if (sceneId === undefined || config.scene == sceneId) {
@@ -2869,7 +2877,7 @@ this.addHotSpot = function(hs, sceneId) {
             renderHotSpot(hs);
     }
     return this;
-}
+};
 
 /**
  * Remove a hot spot.
@@ -2913,7 +2921,7 @@ this.removeHotSpot = function(hotSpotId, sceneId) {
             return false;
         }
     }
-}
+};
 
 /**
  * This method should be called if the viewer's container is resized.
@@ -2923,7 +2931,7 @@ this.removeHotSpot = function(hotSpotId, sceneId) {
 this.resize = function() {
     if (renderer)
         onDocumentResize();
-}
+};
 
 /**
  * Check if a panorama is loaded.
@@ -2933,7 +2941,7 @@ this.resize = function() {
  */
 this.isLoaded = function() {
     return loaded;
-}
+};
 
 /**
  * Check if device orientation control is supported.
@@ -2943,7 +2951,7 @@ this.isLoaded = function() {
  */
 this.isOrientationSupported = function() {
     return orientationSupport || false;
-}
+};
 
 /**
  * Stop using device orientation.
@@ -2952,7 +2960,7 @@ this.isOrientationSupported = function() {
  */
 this.stopOrientation = function() {
     stopOrientation();
-}
+};
 
 /**
  * Start using device orientation (does nothing if not supported).
@@ -2962,7 +2970,7 @@ this.stopOrientation = function() {
 this.startOrientation = function() {
     if (orientationSupport)
         startOrientation();
-}
+};
 
 /**
  * Check if device orientation control is currently activated.
@@ -2972,7 +2980,7 @@ this.startOrientation = function() {
  */
 this.isOrientationActive = function() {
     return Boolean(orientation);
-}
+};
 
 /**
  * Subscribe listener to specified event.
@@ -2986,7 +2994,7 @@ this.on = function(type, listener) {
     externalEventListeners[type] = externalEventListeners[type] || [];
     externalEventListeners[type].push(listener);
     return this;
-}
+};
 
 /**
  * Remove an event listener (or listeners).
@@ -3016,7 +3024,7 @@ this.off = function(type, listener) {
         delete externalEventListeners[type];
     }
     return this;
-}
+};
 
 /**
  * Fire listeners attached to specified event.
@@ -3039,7 +3047,7 @@ function fireEvent(type) {
  */
 this.destroy = function() {
     if (renderer)
-        renderer.destroy()
+        renderer.destroy();
     if (listenersAdded) {
         dragFix.removeEventListener('mousedown', onDocumentMouseDown, false);
         dragFix.removeEventListener('dblclick', onDocumentDoubleClick, false);
@@ -3065,7 +3073,9 @@ this.destroy = function() {
         dragFix.removeEventListener('pointerup', onDocumentPointerUp, false);
         dragFix.removeEventListener('pointerleave', onDocumentPointerUp, false);
     }
-    
+    /** change by Zaher Kassem at 28/08/2018
+     * make sure the custome controll not remove on destroy
+     **/
     if(initialConfig.customControls){
     	$(container).children(":not("+initialConfig.customControls+")").remove();	
     }else{
@@ -3074,7 +3084,7 @@ this.destroy = function() {
 	    uiContainer.classList.remove('pnlm-grab');
 	    uiContainer.classList.remove('pnlm-grabbing');
     }
-}
+};
 
 }
 
