@@ -779,7 +779,8 @@ function mouseEventToCoords(event) {
  */
 function onDocumentMouseMove(event) {
     if (isUserInteracting && loaded) {
-        latestInteraction = Date.now();
+    	hideLoadedIcon();
+    	latestInteraction = Date.now();
         var canvas = renderer.getCanvas();
         var canvasWidth = canvas.clientWidth,
             canvasHeight = canvas.clientHeight;
@@ -794,7 +795,6 @@ function onDocumentMouseMove(event) {
         var pitch = ((Math.atan(pos.y / canvasHeight * 2 - 1) - Math.atan(onPointerDownPointerY / canvasHeight * 2 - 1)) * 180 / Math.PI * vfov / 90) + onPointerDownPitch;
         speed.pitch = (pitch - config.pitch) * 0.2;
         config.pitch = pitch;
-        hideLoadedIcon();
     }
 }
 
@@ -911,6 +911,7 @@ function onDocumentTouchMove(event) {
         var pitch = (clientY - onPointerDownPointerY) * touchmovePanSpeedCoeff + onPointerDownPitch;
         speed.pitch = (pitch - config.pitch) * 0.2;
         config.pitch = pitch;
+        hideLoadedIcon();
     }
 }
 
@@ -927,6 +928,7 @@ function onDocumentTouchEnd() {
     latestInteraction = Date.now();
 
     fireEvent('touchend', event);
+    hideLoadedIcon();
 }
 
 var pointerIDs = [],
