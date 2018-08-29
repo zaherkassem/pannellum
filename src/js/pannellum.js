@@ -108,6 +108,7 @@ var defaultConfig = {
     crossOrigin: 'anonymous',
     touchPanSpeedCoeffFactor: 1,
     capturedKeyNumbers: [16, 17, 27, 37, 38, 39, 40, 61, 65, 68, 83, 87, 107, 109, 173, 187, 189],
+    isMobile: false
 };
 
 // Translatable / configurable strings
@@ -270,6 +271,18 @@ if (window.DeviceOrientationEvent) {
     orientationSupport = false;
 }
 
+// loadedIcon - added by Zaher Kassem in 29/08/2018
+var loadedIcon = document.createElement('div');
+loadedIcon.className = initialConfig.isMobile ? 'pnlm-loaded-icon-mobile' : 'pnlm-loaded-icon-desktop';
+
+showLoadedIcon = function(){
+	uiContainer.appendChild(loadedIcon);
+}
+
+hideLoadedIcon = function(){
+	$("."+loadedIcon.className).remove();
+}
+
 // Compass
 var compass = document.createElement('div');
 compass.className = 'pnlm-compass pnlm-controls pnlm-control';
@@ -398,6 +411,8 @@ function init() {
                     a.href = p;
                     a.textContent = a.href;
                     anError(config.strings.fileAccessError.replace('%s', a.outerHTML));
+                }else{
+                	showLoadedIcon();
                 }
                 var img = this.response;
                 parseGPanoXMP(img);
@@ -694,7 +709,7 @@ function onDocumentMouseDown(event) {
     
     // Turn off auto-rotation if enabled
     stopAnimation();
-
+    hideLoadedIcon();
     //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
     config.roll = 0;
 
@@ -779,6 +794,7 @@ function onDocumentMouseMove(event) {
         var pitch = ((Math.atan(pos.y / canvasHeight * 2 - 1) - Math.atan(onPointerDownPointerY / canvasHeight * 2 - 1)) * 180 / Math.PI * vfov / 90) + onPointerDownPitch;
         speed.pitch = (pitch - config.pitch) * 0.2;
         config.pitch = pitch;
+        hideLoadedIcon();
     }
 }
 
@@ -787,6 +803,7 @@ function onDocumentMouseMove(event) {
  * @private
  */
 function onDocumentMouseUp(event) {
+	hideLoadedIcon();
     if (!isUserInteracting) {
         return;
     }
@@ -817,7 +834,7 @@ function onDocumentTouchStart(event) {
 
     // Turn off auto-rotation if enabled
     stopAnimation();
-
+    hideLoadedIcon();
     //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
     config.roll = 0;
 
@@ -987,6 +1004,7 @@ function onDocumentMouseWheel(event) {
 
     // Turn off auto-rotation if enabled
     stopAnimation();
+    hideLoadedIcon();
     latestInteraction = Date.now();
 
     if (event.wheelDeltaY) {
@@ -1014,6 +1032,7 @@ function onDocumentMouseWheel(event) {
 function onDocumentKeyPress(event) {
     // Turn off auto-rotation if enabled
     stopAnimation();
+    hideLoadedIcon();
     latestInteraction = Date.now();
 
     //stopOrientation(); //change by Zaher Kassem at 28/08/2018 
