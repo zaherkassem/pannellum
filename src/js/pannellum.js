@@ -2132,6 +2132,7 @@ function onFullScreenChange() {
         
     }
     setFullscreenActive(fullscreenActive); // added by Zaher Kassem at 28/08/2018
+    fireEvent('fullscreenchange', fullscreenActive);
     // Resize renderer (deal with browser quirks and fixes #155)
     renderer.resize();
     setHfov(config.hfov);
@@ -2225,6 +2226,7 @@ function constrainHfov(hfov) {
  */
 function setHfov(hfov) {
     config.hfov = constrainHfov(hfov);
+    fireEvent('zoomchange', config.hfov);
 }
 
 /**
