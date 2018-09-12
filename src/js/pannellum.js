@@ -108,7 +108,8 @@ var defaultConfig = {
     crossOrigin: 'anonymous',
     touchPanSpeedCoeffFactor: 1,
     capturedKeyNumbers: [16, 17, 27, 37, 38, 39, 40, 61, 65, 68, 83, 87, 107, 109, 173, 187, 189],
-    isMobile: false
+    isMobile: false,
+    showLoadingDenominator:true
 };
 
 // Translatable / configurable strings
@@ -437,7 +438,8 @@ function init() {
                         numerator = e.loaded;
                         denominator = e.total;
                     }
-                    infoDisplay.load.msg.innerHTML = numerator + ' / ' + denominator + ' ' + unit;
+                    if(initialConfig.showLoadingDenominator)
+                    	infoDisplay.load.msg.innerHTML = numerator + ' / ' + denominator + ' ' + unit;
                 } else {
                     // Display loading spinner
                     infoDisplay.load.lbox.style.display = 'block';
