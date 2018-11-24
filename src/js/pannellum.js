@@ -278,11 +278,11 @@ loadedIcon.className = initialConfig.isMobile ? 'pnlm-loaded-icon-mobile' : 'pnl
 
 showLoadedIcon = function(){
 	uiContainer.appendChild(loadedIcon);
-}
+};
 
 hideLoadedIcon = function(){
 	$("."+loadedIcon.className).remove();
-}
+};
 
 // Compass
 var compass = document.createElement('div');
@@ -593,7 +593,6 @@ function parseGPanoXMP(image) {
                 if (specifiedPhotoSphereExcludes.indexOf('vOffset') < 0)
                     config.vOffset = ((xmp.topPixels + xmp.croppedHeight / 2) / xmp.fullHeight - 0.5) * -180;
                 if (xmp.heading !== null && specifiedPhotoSphereExcludes.indexOf('northOffset') < 0) {
-                    // TODO: make sure this works correctly for partial panoramas
                     config.northOffset = xmp.heading;
                     if (config.compass !== false) {
                         config.compass = true;
@@ -605,8 +604,6 @@ function parseGPanoXMP(image) {
                     if (specifiedPhotoSphereExcludes.indexOf('horizonRoll') < 0)
                         config.horizonRoll = xmp.horizonRoll;
                 }
-                
-                // TODO: add support for initial view settings
             }
         }
         
@@ -787,7 +784,6 @@ function onDocumentMouseMove(event) {
         var canvasWidth = canvas.clientWidth,
             canvasHeight = canvas.clientHeight;
         var pos = mousePosition(event);
-        //TODO: This still isn't quite right
         var yaw = ((Math.atan(onPointerDownPointerX / canvasWidth * 2 - 1) - Math.atan(pos.x / canvasWidth * 2 - 1)) * 180 / Math.PI * config.hfov / 90) + onPointerDownYaw;
         speed.yaw = (yaw - config.yaw) % 360 * 0.2;
         config.yaw = yaw;
