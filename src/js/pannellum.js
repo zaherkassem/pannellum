@@ -272,6 +272,8 @@ if (window.DeviceOrientationEvent) {
     orientationSupport = false;
 }
 
+
+
 // loadedIcon - added by Zaher Kassem in 29/08/2018
 var loadedIcon = document.createElement('div');
 loadedIcon.className = initialConfig.isMobile ? 'pnlm-loaded-icon-mobile' : 'pnlm-loaded-icon-desktop';
@@ -462,6 +464,8 @@ function init() {
     if (config.draggable)
         uiContainer.classList.add('pnlm-grab');
     uiContainer.classList.remove('pnlm-grabbing');
+    
+    config.orientationSupport = orientationSupport;
 }
 
 /**
@@ -2127,7 +2131,6 @@ function onFullScreenChange() {
     } else {
         controls.fullscreen.classList.remove('pnlm-fullscreen-toggle-button-active');
         fullscreenActive = false;
-        
     }
     setFullscreenActive(fullscreenActive); // added by Zaher Kassem at 28/08/2018
     fireEvent('fullscreenchange', fullscreenActive);
@@ -2971,7 +2974,7 @@ this.isLoaded = function() {
  * @returns {boolean} True if supported, else false
  */
 this.isOrientationSupported = function() {
-    return orientationSupport || false;
+    return orientationSupport || false;;
 };
 
 /**
