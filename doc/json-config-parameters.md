@@ -52,7 +52,8 @@ counter-clockwise, and negative is clockwise.
 
 Sets the delay, in milliseconds, to start automatically rotating the panorama
 after user activity ceases. This parameter only has an effect if the
-`autoRotate` parameter is set.
+`autoRotate` parameter is set. Before starting rotation, the viewer is panned
+to the initial pitch.
 
 
 ### `autoRotateStopDelay` (number)
@@ -96,6 +97,13 @@ viewer is fullscreen.
 ### `draggable` (boolean)
 
 If set to `false`, mouse and touch dragging is disabled. Defaults to `true`.
+
+
+### `friction` (number)
+
+Controls the "friction" that slows down the viewer motion after it is dragged
+and released. Higher values mean the motion stops faster. Should be set
+(0.0, 1.0]; defaults to 0.15.
 
 
 ### `disableKeyboardCtrl` (boolean)
@@ -218,9 +226,9 @@ This specifies the type of CORS request used and can be set to either
 `anonymous` or `use-credentials`. Defaults to `anonymous`.
 
 
-### `hotSpots` (array)
+### `hotSpots` (object)
 
-This specifies an array of hot spots that can be links to other scenes,
+This specifies a dictionary of hot spots that can be links to other scenes,
 information, or external links. Each array element has the following properties.
 
 
@@ -250,10 +258,10 @@ spot.
 If specified for an `info` hot spot, the hot spot links to the specified URL.
 Not applicable for `scene` hot spots.
 
-#### `target` (string)
+#### `attributes` (dict)
 
-Specifies URL's link target attribute. Defaults to `_blank`, to open link in
-new tab to avoid opening in viewer frame / page.
+Specifies URL's link attributes. If not set, the `target` attribute is set to
+`_blank`, to open link in new tab to avoid opening in viewer frame / page.
 
 #### `sceneId` (string)
 
@@ -438,6 +446,12 @@ Currently, only equirectangular dynamic content is supported.
 
 The panorama source is considered dynamic when this is set to `true`. Defaults
 to `false`. This should be set to `true` for video.
+
+### `dynamicUpdate` (boolean)
+
+For dynamic content, viewer will start automatically updating when set to
+`true`. Defaults to `false`. If the updates are controlled via the `setUpdate`
+method, as with the Video.js plugin, this should be set to `false`.
 
 
 
